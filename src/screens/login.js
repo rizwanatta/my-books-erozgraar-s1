@@ -1,15 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,Image, Text, View } from 'react-native';
+import { StyleSheet,
+     TouchableOpacity, 
+     TouchableHighlight, 
+     Pressable,
+     Text,
+      View } from 'react-native';
 
 function Login() {
   return (
     <View style={styles.container}>
-
-    <Image
-    source={require('../../assets/dp2.png')}
-    />
-    <Text>hie i am here 
-        in login</Text>
+        <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Touch Button</Text>
+        </TouchableOpacity>
   
     </View>
   );
@@ -22,6 +24,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button:{
+      backgroundColor:'purple',
+      padding:10,
+      borderRadius:10
+  },
+  buttonText:{
+      color:"white"
+  }
 });
 
 
