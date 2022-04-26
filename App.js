@@ -1,8 +1,8 @@
-import {Login} from './src/screens/login'
+import { NavContainer } from "./src/services/navigation";
 
 export default function App() {
   return (
-    <Login/>
+    <NavContainer/>
   );
 }
 
