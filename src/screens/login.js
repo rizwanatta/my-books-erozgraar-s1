@@ -21,8 +21,12 @@ function Login({navigation}) {
 
       />
 
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Touch Button</Text>
+        <TouchableOpacity style={styles.button}
+        onPress={()=>{
+          navigation.navigate('Home')
+        }}
+        >
+            <Text style={styles.buttonText}>Go To Home</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={()=>{
