@@ -1,55 +1,33 @@
 import * as React from 'react';
-import {View, Image,Text, FlatList} from 'react-native';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-
-
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+import {ImageBackground, View, Button} from 'react-native';
 
 
 function Home ({navigation}) {
 
-    const numbers = [1,2, 3, 4,5 ,6]
-
-    const numbersObjArray = [
-        {
-            "name": "rizwan",
-            "age": 30,
-        },
-        {
-            "name": "steve",
-            "age": 60,
-        },
-        {
-            "name": "saleem",
-            "age": 40
-        }
-    ]
-
-
     return(
 
         <View>
+            <ImageBackground
+            source={{uri: "https://cdn.pixabay.com/photo/2022/01/07/07/13/chicago-6921293__340.jpg"}}
+            style={{width:"100%", height:"100%"}}
+            resizeMode="cover"
+            >
 
-            <View>
-                <FlatList
-                        data={numbersObjArray}
-                        renderItem={({item})=> (
-                            <Card>
-                            <Card.Title title={item.name} subtitle={item.age} left={LeftContent} />
-                            <Card.Content>
-                              <Title>{item.name}</Title>
-                              <Paragraph>AGE: {item.age}</Paragraph>
-                            </Card.Content>
-                            <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-                            <Card.Actions>
-                              <Button>Cancel</Button>
-                              <Button>Ok</Button>
-                            </Card.Actions>
-                          </Card>
-                        )}
-                />
-            </View>
+                <View style={{backgroundColor:'rgba(0,0,0,0.7)',
+                justifyContent:'center',
+                alignItems:'center',
+                flex:1}}>
+
+                    <Button title={"button"}
+                    onPress={()=>{
+                        navigation.navigate("Profile",{baseCount:32, name:"akram"})
+                    }}
         
+                    />
+
+                </View>
+
+            </ImageBackground>
         </View>
 
     )
