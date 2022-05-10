@@ -1,8 +1,5 @@
-import { NavContainer } from "./src/services/navigation";
+import { NavContainer } from './src/services/navigation';
 
 export default function App() {
-  return (
-    <NavContainer/>
-  );
+  return <NavContainer />;
 }
-

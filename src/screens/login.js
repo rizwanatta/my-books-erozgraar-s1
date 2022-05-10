@@ -1,40 +1,38 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,
-     TouchableOpacity, 
-     TouchableHighlight, 
-     Pressable,
-     Text,
-     Image,
-      View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { useState } from '';
 
-function Login({navigation}) {
+function Login({ navigation }) {
+  const [email, setEmail] = useState('');
+
   return (
     <View style={styles.container}>
-      <Image
-      source={{uri:'https://cdn.pixabay.com/photo/2022/01/25/12/11/electric-kettle-6966011_1280.jpg'}}
-      style={{
-        height:100,
-        width:100,
-        resizeMode:"contain",
-        borderRadius:50
-    }}
-
+      <Ionicons
+        name="book"
+        size={200}
+        color="purple"
+        style={{ alignSelf: 'center' }}
       />
 
-        <TouchableOpacity style={styles.button}
-        onPress={()=>{
-          navigation.navigate('Home')
-        }}
-        >
-            <Text style={styles.buttonText}>Go To Home</Text>
-        </TouchableOpacity>
+      <TextInput label="Email" onChangeText={(text) => setEmail(text)} />
 
-        <TouchableOpacity onPress={()=>{
-          navigation.navigate("Signup", {userName: 'Erozgaar program', rollNumber: 10, userAge: 32, userFather: "Saleem"})
-        }} >
-            <Text style={{color:'black', marginTop:20}}>Dont have an account? Signup</Text>
-        </TouchableOpacity>
-  
+      <TextInput
+        label="Password"
+        secureTextEntry={true}
+        right={<TextInput.Icon name="eye" color="purple" />}
+      />
+
+      <Button
+        mode="outlined"
+        color="purple"
+        onPress={() => {
+          navigation.navigate('Home', { userEmail: email });
+        }}
+      >
+        Login
+      </Button>
     </View>
   );
 }
@@ -43,18 +41,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
   },
-  button:{
-      backgroundColor:'purple',
-      padding:10,
-      borderRadius:10
+  button: {
+    backgroundColor: 'purple',
+    padding: 10,
+    borderRadius: 10,
   },
-  buttonText:{
-      color:"white"
-  }
+  buttonText: {
+    color: 'white',
+  },
 });
 
-
-export {Login}
+export { Login };
