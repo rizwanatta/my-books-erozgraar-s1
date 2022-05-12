@@ -1,43 +1,46 @@
 import * as React from 'react';
-import { ImageBackground, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, FlatList } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Foundation from '@expo/vector-icons/Foundation';
+import axios from 'axios';
+import { Avatar } from 'react-native-paper';
 
 function Home({ navigation, route }) {
   const { userEmail } = route.params;
+  const [users, setUsers] = React.useState([]);
+
+  axios.get('https://api.github.com/users').then((response) => {
+    // if the api call returned some data check and save it
+    if (response.data) {
+      setUsers(response.data);
+    }
+  });
 
   return (
     <View>
-      <ImageBackground
-        source={{
-          uri: 'https://cdn.pixabay.com/photo/2022/01/07/07/13/chicago-6921293__340.jpg',
-        }}
-        style={{ width: '100%', height: '100%' }}
-        resizeMode="cover"
-      >
-        <View
-          style={{
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flex: 1,
-          }}
-        >
-          <Text style={{ color: 'white' }}>{userEmail}</Text>
-
-          <Ionicons name="person" color="white" size={30} />
-          <Ionicons name="home" color="purple" size={30} />
-          <Foundation name="bitcoin" color="yellow" size={100} />
-          <Button
-            title={'button'}
-            onPress={() => {
-              navigation.navigate('Profile', { baseCount: 32, name: 'akram' });
-            }}
-          />
-        </View>
-      </ImageBackground>
+      <FlatList
+        data={users}
+        renderItem={({ item }) => (
+          <View style={styles.itemContainer}>
+            <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
+            <Text>{item.login}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 }
 
 export { Home };
+
+const styles = StyleSheet.create({
+  itemContainer: {
+    flexDirection: 'row',
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: 'gray',
+    margin: 5,
+  },
+});
