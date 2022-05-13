@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 function Login({ navigation }) {
   const [email, setEmail] = useState('');
+  const [loginDisable, setLoginDisable] = useState(true);
 
   return (
     <View style={styles.container}>
@@ -15,7 +16,15 @@ function Login({ navigation }) {
         style={{ alignSelf: 'center' }}
       />
 
-      <TextInput label="Email" onChangeText={(text) => setEmail(text)} />
+      <TextInput
+        label="Email"
+        onChangeText={(text) => {
+          setEmail(text);
+          if (email.length > 0) {
+            setLoginDisable(false);
+          }
+        }}
+      />
 
       <TextInput
         label="Password"
@@ -26,8 +35,9 @@ function Login({ navigation }) {
       <Button
         mode="outlined"
         color="purple"
+        disabled={email.length > 0 ? false : true}
         onPress={() => {
-          navigation.navigate('Home', { userEmail: email });
+          navigation.replace('Home', { userEmail: email });
         }}
       >
         Login

@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import { View, Text, Button } from 'react-native';
+import { Avatar } from 'react-native-paper';
 
 const Profile = ({ route }) => {
   const [count, setCount] = useState(0);
   const [show, setShow] = useState(false);
 
-  const { baseCount, name } = route.params;
+  const { userDetails } = route.params;
 
   return (
-    <View>
-      <Text style={{ fontSize: 30, alignSelf: 'center' }}>{baseCount}</Text>
-      <Text style={{ fontSize: 30, alignSelf: 'center' }}>{name}</Text>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <Avatar.Image size={50} source={{ uri: userDetails.avatar_url }} />
+      <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+        {userDetails.login}
+      </Text>
 
       <Button
         onPress={() => {

@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Button, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Foundation from '@expo/vector-icons/Foundation';
 import axios from 'axios';
@@ -18,13 +24,19 @@ function Home({ navigation, route }) {
 
   return (
     <View>
+      <Text>{userEmail}</Text>
       <FlatList
         data={users}
         renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
+          <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() => {
+              navigation.navigate('Profile', { userDetails: item });
+            }}
+          >
             <Avatar.Image size={50} source={{ uri: item.avatar_url }} />
             <Text>{item.login}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>
