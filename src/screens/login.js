@@ -2,10 +2,19 @@ import { StyleSheet, Text, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
+import { firebase } from '../db/firebase_config';
 
 function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [loginDisable, setLoginDisable] = useState(true);
+
+  function storeNewUser() {
+    firebase.firestore().collection('users').doc('123zxcvbn').set({
+      first_name: 'erozgaar',
+      last_name: 'punjab',
+      email: 'erozgar@gmail.com',
+    });
+  }
 
   return (
     <View style={styles.container}>
@@ -37,7 +46,8 @@ function Login({ navigation }) {
         color="purple"
         disabled={email.length > 0 ? false : true}
         onPress={() => {
-          navigation.replace('Home', { userEmail: email });
+          storeNewUser();
+          // navigation.replace('Home', { userEmail: email });
         }}
       >
         Login
