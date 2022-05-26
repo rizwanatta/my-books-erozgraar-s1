@@ -12,7 +12,6 @@ import axios from 'axios';
 import { Avatar } from 'react-native-paper';
 
 function Home({ navigation, route }) {
-  const { userEmail } = route.params;
   const [users, setUsers] = React.useState([]);
 
   axios.get('https://api.github.com/users').then((response) => {
@@ -24,7 +23,6 @@ function Home({ navigation, route }) {
 
   return (
     <View>
-      <Text>{userEmail}</Text>
       <FlatList
         data={users}
         renderItem={({ item }) => (

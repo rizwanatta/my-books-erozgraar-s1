@@ -1,25 +1,22 @@
-import { StyleSheet, Alert, Text, View } from 'react-native';
+import { StyleSheet, Alert, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useState } from 'react';
 import { firebase } from '../db/firebase_config';
 
-function Login({ navigation }) {
+function Register({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  if (firebase.auth().currentUser !== null) {
-    navigation.replace('Home');
-  } else {
-    // user is logged out
-  }
-
-  function loginUser() {
+  function registerUser() {
+    // call firebase and ask it to register on
+    // firebase auth
     firebase
       .auth()
-      .signInWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(email, password)
       .then((response) => {
-        navigation.replace('Home');
+        Alert.alert('🎉', 'now you can signin');
+        navigation.goBack();
       })
       .catch((error) => {
         Alert.alert('❌', 'Something Went Wrong, Please Retry');
@@ -29,7 +26,7 @@ function Login({ navigation }) {
   return (
     <View style={styles.container}>
       <Ionicons
-        name="book"
+        name="person"
         size={200}
         color="purple"
         style={{ alignSelf: 'center' }}
@@ -44,15 +41,14 @@ function Login({ navigation }) {
 
       <TextInput
         label="Password"
-        secureTextEntry={true}
         onChangeText={(text) => setPassword(text)}
+        secureTextEntry={true}
         right={<TextInput.Icon name="eye" color="purple" />}
       />
 
       <Button
         mode="outlined"
         color="purple"
-        disabled={email.length > 0 ? false : true}
         onPress={() => {
           if (email.length === 0) {
             Alert.alert('Sorry 😥', 'You Missed Email');
@@ -60,30 +56,12 @@ function Login({ navigation }) {
             Alert.alert('Sorry 🔑', 'you missed Password');
           } else {
             // here we will go to firebase
-            loginUser();
+            registerUser();
           }
         }}
       >
-        Login
+        Register
       </Button>
-
-      <Text
-        style={{
-          color: 'black',
-          alignSelf: 'center',
-          margin: 10,
-        }}
-      >
-        Dont have an account? {'\t'}
-        <Text
-          onPress={() => {
-            navigation.navigate('Register');
-          }}
-          style={{ color: 'purple', fontWeight: 'bold' }}
-        >
-          Register Now!
-        </Text>
-      </Text>
     </View>
   );
 }
@@ -104,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Login };
+export { Register };
