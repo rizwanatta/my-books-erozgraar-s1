@@ -9,7 +9,7 @@ function Login({ navigation }) {
   const [password, setPassword] = useState('');
 
   if (firebase.auth().currentUser !== null) {
-    navigation.replace('Home');
+    // navigation.replace('Home');
   } else {
     // user is logged out
   }

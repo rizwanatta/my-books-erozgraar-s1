@@ -1,51 +1,37 @@
 import { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, Alert } from 'react-native';
 import { Avatar } from 'react-native-paper';
+import { firebase } from '../db/firebase_config';
 
 const Profile = ({ route }) => {
-  const [count, setCount] = useState(0);
-  const [show, setShow] = useState(false);
+  const [person, setPerson] = useState();
 
-  const { userDetails } = route.params;
+  const userId = firebase.auth().currentUser.uid;
+
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(userId)
+    .get()
+    .then((response) => {
+      response.ref.onSnapshot((response) => {
+        console.log(response);
+      });
+      Alert.alert('test', 'response');
+    })
+    .catch((error) => {
+      Alert.alert('test', 'error');
+    });
 
   return (
     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Avatar.Image size={50} source={{ uri: userDetails.avatar_url }} />
-      <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-        {userDetails.login}
-      </Text>
+      <Text style={{ fontSize: 30, alignSelf: 'center' }}></Text>
 
-      <Button
-        onPress={() => {
-          // const inc = count + 1
-          // setCount(inc)
+      <Text style={{ fontSize: 28, alignSelf: 'center' }}></Text>
 
-          if (count === 10) {
-            setShow(true);
-          } else {
-            setShow(false);
-          }
+      <Text style={{ fontSize: 26, alignSelf: 'center' }}></Text>
 
-          setCount(count + 1);
-
-          // setCount(count++)
-        }}
-        title={'increase'}
-      />
-
-      {show === true ? (
-        <Button
-          onPress={() => {
-            // const dec = count - 1
-            // setCount(dec)
-
-            setCount(count - 1);
-          }}
-          title={'Decrease'}
-        />
-      ) : (
-        <View />
-      )}
+      <Text style={{ fontSize: 20, alignSelf: 'center' }}></Text>
     </View>
   );
 };
