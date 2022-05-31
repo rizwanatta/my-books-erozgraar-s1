@@ -1,10 +1,12 @@
+import React from 'react';
 import { useState } from 'react';
 import { View, Text, Button, Alert } from 'react-native';
-import { Avatar } from 'react-native-paper';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { firebase } from '../db/firebase_config';
 
 const Profile = ({ route }) => {
   const [person, setPerson] = useState();
+  const [loading, setLoading] = useState(true);
 
   const userId = firebase.auth().currentUser.uid;
 
@@ -14,25 +16,36 @@ const Profile = ({ route }) => {
     .doc(userId)
     .get()
     .then((response) => {
-      response.ref.onSnapshot((response) => {
-        console.log(response);
-      });
-      Alert.alert('test', 'response');
+      setPerson(response.data());
+      setLoading(false);
     })
     .catch((error) => {
       Alert.alert('test', 'error');
+      setLoading(false);
     });
 
   return (
-    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 30, alignSelf: 'center' }}></Text>
-
-      <Text style={{ fontSize: 28, alignSelf: 'center' }}></Text>
-
-      <Text style={{ fontSize: 26, alignSelf: 'center' }}></Text>
-
-      <Text style={{ fontSize: 20, alignSelf: 'center' }}></Text>
-    </View>
+    <React.Fragment>
+      {loading === true ? (
+        <Text>Fetching the data</Text>
+      ) : (
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <Ionicons name={'person-circle'} size={200} color={'purple'} />
+          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+            {person.firstName}
+          </Text>
+          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+            {person.lastName}
+          </Text>
+          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+            {person.address}
+          </Text>
+          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+            {person.gender}
+          </Text>
+        </View>
+      )}
+    </React.Fragment>
   );
 };
 
