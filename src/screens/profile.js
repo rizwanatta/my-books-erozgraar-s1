@@ -1,10 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Camera, CameraType } from 'expo-camera';
+
 import { firebase } from '../db/firebase_config';
 
-const Profile = ({ route }) => {
+const Profile = ({ route, navigation }) => {
   const [person, setPerson] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -24,28 +26,30 @@ const Profile = ({ route }) => {
       setLoading(false);
     });
 
+  function openCamera() {
+    navigation.navigate('Camera');
+  }
+
+  if (loading === true) {
+    return <Text>Fetching the data</Text>;
+  }
+
   return (
-    <React.Fragment>
-      {loading === true ? (
-        <Text>Fetching the data</Text>
-      ) : (
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Ionicons name={'person-circle'} size={200} color={'purple'} />
-          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-            {person.firstName}
-          </Text>
-          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-            {person.lastName}
-          </Text>
-          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-            {person.address}
-          </Text>
-          <Text style={{ fontSize: 30, alignSelf: 'center' }}>
-            {person.gender}
-          </Text>
-        </View>
-      )}
-    </React.Fragment>
+    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+      <TouchableOpacity onPress={() => openCamera()}>
+        <Ionicons name={'person-circle'} size={200} color={'purple'} />
+      </TouchableOpacity>
+      <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+        {person.firstName}
+      </Text>
+      <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+        {person.lastName}
+      </Text>
+      <Text style={{ fontSize: 30, alignSelf: 'center' }}>
+        {person.address}
+      </Text>
+      <Text style={{ fontSize: 30, alignSelf: 'center' }}>{person.gender}</Text>
+    </View>
   );
 };
 
