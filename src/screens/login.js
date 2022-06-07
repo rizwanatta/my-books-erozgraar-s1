@@ -1,3 +1,4 @@
+import { useRef, useEffect } from 'react';
 import { StyleSheet, Alert, Text, View } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -8,6 +9,32 @@ function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const inputRef = useRef();
+
+  // this iwill only run when user see the page
+  useEffect(() => {
+    console.log('aaana pa');
+  }, []);
+
+  // this iwill only run when user leaves the page
+  useEffect(() => {
+    return () => {
+      console.log('jaaana pa');
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log('yp email  pa');
+  }, [email]);
+
+  useEffect(() => {
+    if (password.length < 6) {
+      console.log('password is week');
+    } else {
+      console.log('wow strong password');
+    }
+  }, [password]);
+
   if (firebase.auth().currentUser !== null) {
     // navigation.replace('Home');
   } else {
@@ -15,15 +42,16 @@ function Login({ navigation }) {
   }
 
   function loginUser() {
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
-        navigation.replace('Home');
-      })
-      .catch((error) => {
-        Alert.alert('❌', 'Something Went Wrong, Please Retry');
-      });
+    navigation.replace('Home');
+    // firebase
+    //   .auth()
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then((response) => {
+    //     navigation.replace('Home');
+    //   })
+    //   .catch((error) => {
+    //     Alert.alert('❌', 'Something Went Wrong, Please Retry');
+    //   });
   }
 
   return (
@@ -40,6 +68,7 @@ function Login({ navigation }) {
         onChangeText={(text) => {
           setEmail(text);
         }}
+        ref={inputRef}
       />
 
       <TextInput
@@ -52,10 +81,11 @@ function Login({ navigation }) {
       <Button
         mode="outlined"
         color="purple"
-        disabled={email.length > 0 ? false : true}
+        // disabled={email.length > 0 ? false : true}
         onPress={() => {
           if (email.length === 0) {
-            Alert.alert('Sorry 😥', 'You Missed Email');
+            // Alert.alert('Sorry 😥', 'You Missed Email');
+            inputRef.current.label = 'sorry';
           } else if (password.length === 0) {
             Alert.alert('Sorry 🔑', 'you missed Password');
           } else {
@@ -77,7 +107,7 @@ function Login({ navigation }) {
         Dont have an account? {'\t'}
         <Text
           onPress={() => {
-            navigation.navigate('Register');
+            navigation.replace('Register');
           }}
           style={{ color: 'purple', fontWeight: 'bold' }}
         >

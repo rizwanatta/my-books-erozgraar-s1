@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { View, Text, Image } from 'react-native';
 import { Button } from 'react-native-paper';
 
-function CameraComp() {
+function CameraComp({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(CameraType.back);
   const [takenPic, setTakenPic] = useState();
 
+  let camera;
+
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      const response = await Camera.requestCameraPermissionsAsync();
+      if (response.status === 'granted') {
+        setHasPermission(true);
+      } else {
+        setHasPermission(false);
+      }
     })();
   }, []);
 
@@ -21,6 +27,7 @@ function CameraComp() {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
   return (
     <View style={{ flex: 1 }}>
       <Button
@@ -34,13 +41,28 @@ function CameraComp() {
       >
         FLip
       </Button>
-      <Camera style={{ height: 400, width: '100%' }} type={type}></Camera>
+      <Camera
+        ref={(r) => {
+          camera = r;
+        }}
+        style={{ height: 400, width: '100%' }}
+        type={type}
+      ></Camera>
 
       <Button
         onPress={async () => {
           const options = { quality: 1, base64: true };
-          const data = await Camera.takePictureAsync(options);
+          const data = await camera.takePictureAsync(options);
+          console.log(data);
           setTakenPic(data);
+        }}
+      >
+        Capture
+      </Button>
+
+      <Button
+        onPress={() => {
+          navigation.navigate('Profile', { imageData: takenPic });
         }}
       >
         Capture
@@ -48,7 +70,10 @@ function CameraComp() {
 
       {/* TODO we will start 43 lecture on it! */}
       {takenPic && (
-        <Image source={{ uri: takenPic }} style={{ width: 200, height: 200 }} />
+        <Image
+          source={{ uri: takenPic.uri }}
+          style={{ width: 200, height: 200 }}
+        />
       )}
     </View>
   );
