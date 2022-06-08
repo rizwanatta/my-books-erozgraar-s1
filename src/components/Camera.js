@@ -65,7 +65,7 @@ function CameraComp({ navigation }) {
           navigation.navigate('Profile', { imageData: takenPic });
         }}
       >
-        Capture
+        GO To Profile
       </Button>
 
       {/* TODO we will start 43 lecture on it! */}
